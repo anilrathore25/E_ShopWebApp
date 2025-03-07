@@ -46,4 +46,5 @@ public class ProductOrder {
 	@OneToOne(cascade = CascadeType.ALL)
 	private OrderAddress orderAddress;
 
+	private String sellerEmail;
 }

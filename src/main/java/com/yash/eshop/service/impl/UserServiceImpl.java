@@ -29,9 +29,15 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	// need to modifying this
+
 	@Override
-	public UserDtls saveUser(UserDtls user) {
-		user.setRole("ROLE_USER");
+	public UserDtls saveUser(UserDtls user,boolean isSeller) {
+		if (isSeller) {
+			user.setRole("ROLE_SELLER"); // Ensure the role is set for sellers
+		} else {
+			user.setRole("ROLE_USER"); // Ensure the role is set for regular users
+		}
 		user.setIsEnable(true);
 		user.setAccountNonLocked(true);
 		user.setFailedAttempt(0);

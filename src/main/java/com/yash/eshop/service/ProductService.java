@@ -30,4 +30,5 @@ public interface ProductService {
 
 	public Page<Product> searchActiveProductPagination(Integer pageNo, Integer pageSize, String category, String ch);
 
+	List<Product> getProductsBySellerEmail(String sellerEmail);
 }

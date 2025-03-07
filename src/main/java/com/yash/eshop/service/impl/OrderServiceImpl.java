@@ -28,6 +28,8 @@ public class OrderServiceImpl implements OrderService {
 	private ProductOrderRepository orderRepository;
 
 	@Autowired
+	private ProductOrderRepository productOrderRepository;
+	@Autowired
 	private CartRepository cartRepository;
 
 	@Autowired
@@ -106,4 +108,9 @@ public class OrderServiceImpl implements OrderService {
 		return orderRepository.findByOrderId(orderId);
 	}
 
+	@Override
+	public Page<ProductOrder> getOrdersBySellerEmail(String sellerEmail, Integer pageNo, Integer pageSize) {
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		return productOrderRepository.findBySellerEmail(sellerEmail, pageable);
+	}
 }

@@ -155,5 +155,9 @@ public class ProductServiceImpl implements ProductService {
 //		}
 		return pageProduct;
 	}
+	@Override
+	public List<Product> getProductsBySellerEmail(String sellerEmail) {
+		return productRepository.findBySellerEmail(sellerEmail); // Fetch products by seller email
+	}
 
 }

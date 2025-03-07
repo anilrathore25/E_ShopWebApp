@@ -17,11 +17,11 @@ public class SecurityConfig {
 
 	@Autowired
 	private AuthenticationSuccessHandler authenticationSuccessHandler;
-	
+
 	@Autowired
 	@Lazy
 	private AuthFailureHandlerImpl authenticationFailureHandler;
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -45,7 +45,9 @@ public class SecurityConfig {
 	{
 		http.csrf(csrf->csrf.disable()).cors(cors->cors.disable())
 				.authorizeHttpRequests(req->req.requestMatchers("/user/**").hasRole("USER")
-				.requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/user/**").hasRole("USER")
+						.requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/seller/**").hasRole("SELLER")
 				.requestMatchers("/**").permitAll())
 				.formLogin(form->form.loginPage("/signin")
 						.loginProcessingUrl("/login")
@@ -53,7 +55,7 @@ public class SecurityConfig {
 						.failureHandler(authenticationFailureHandler)
 						.successHandler(authenticationSuccessHandler))
 				.logout(logout->logout.permitAll());
-		
+
 		return http.build();
 	}
 

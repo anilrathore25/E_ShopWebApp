@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
-	public UserDtls saveUser(UserDtls user);
+	public UserDtls saveUser(UserDtls user,boolean isSeller);
 
 	public UserDtls getUserByEmail(String email);
 

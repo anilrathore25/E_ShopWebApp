@@ -95,6 +95,10 @@ public class HomeController {
 	public String register() {
 		return "register";
 	}
+	@GetMapping("/seller_register")
+	public String sellerRegister() {
+		return "seller_register";
+	}
 
 	@GetMapping("/products")
 	public String products(Model m, @RequestParam(value = "category", defaultValue = "") String category,
@@ -147,7 +151,7 @@ public class HomeController {
 		} else {
 			String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
 			user.setProfileImage(imageName);
-			UserDtls saveUser = userService.saveUser(user);
+			UserDtls saveUser = userService.saveUser(user,false);
 
 			if (!ObjectUtils.isEmpty(saveUser)) {
 				if (!file.isEmpty()) {
@@ -166,6 +170,41 @@ public class HomeController {
 		}
 
 		return "redirect:/register";
+	}
+	@PostMapping("/saveSeller")
+	public String saveSeller(@ModelAttribute UserDtls user, @RequestParam("img") MultipartFile file, HttpSession session)
+			throws IOException {
+
+		// Check if the email already exists
+		Boolean existsEmail = userService.existsEmail(user.getEmail());
+
+		if (existsEmail) {
+			session.setAttribute("errorMsg", "Email already exists");
+		} else {
+			// Set the role to seller
+			user.setRole("ROLE_SELLER");
+
+			// Handle the profile image
+			String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
+			user.setProfileImage(imageName);
+			UserDtls saveUser  = userService.saveUser (user, true); // Pass true to indicate seller registration
+
+			if (!ObjectUtils.isEmpty(saveUser )) {
+				if (!file.isEmpty()) {
+					File saveFile = new ClassPathResource("static/img").getFile();
+
+					Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator
+							+ file.getOriginalFilename());
+
+					Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+				}
+				session.setAttribute("succMsg", "Seller registered successfully");
+			} else {
+				session.setAttribute("errorMsg", "Something went wrong on the server");
+			}
+		}
+
+		return "redirect:/seller_register"; // Redirect to the registration page
 	}
 
 //	Forgot Password Code 

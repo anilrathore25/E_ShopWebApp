@@ -284,3 +284,30 @@ jQuery.validator.addMethod('lettersonly', function(value, element) {
 	jQuery.validator.addMethod('numericOnly', function(value, element) {
 		return /^[0-9]+$/.test(value);
 	});
+// script.js
+function nextStep(currentStep) {
+    const currentFormStep = document.getElementById(`step${currentStep}`);
+    const nextFormStep = document.getElementById(`step${currentStep + 1}`);
+
+    if (currentFormStep && nextFormStep) {
+        currentFormStep.classList.remove('active');
+        nextFormStep.classList.add('active');
+    }
+}
+
+function prevStep(currentStep) {
+    const currentFormStep = document.getElementById(`step${currentStep}`);
+    const prevFormStep = document.getElementById(`step${currentStep - 1}`);
+
+    if (currentFormStep && prevFormStep) {
+        currentFormStep.classList.remove('active');
+        prevFormStep.classList.add('active');
+    }
+}
+
+document.getElementById('registrationForm').onsubmit = function(event) {
+    event.preventDefault(); // Prevent the default form submission
+    document.getElementById('registrationForm').classList.add('hidden');
+    document.getElementById('successMessage').classList.remove('hidden');
+    // Here you can add the code to send the form data to your backend
+};
